@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Debug/HW3.tlog
+/Debug/Chess.tlog
+/Debug/Chess.Build.CppClean.log
+/Debug/chessprog.obj
+/Debug/console.obj
+/Debug/gui.obj
+/Debug/HW3.log
+/Debug/vc120.idb
+/Debug/vc120.pdb
+/HW3.vcxproj
+/HW3.vcxproj.filters
+/HW3.vcxproj.user
