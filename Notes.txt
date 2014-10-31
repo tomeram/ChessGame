@@ -1,0 +1,80 @@
+Tomer:
+
+		1. Changed the board type to "char[BOARD_SIZE][BOARD_SIZE]"
+
+		2. Changed the input of get_moves from "board, char*" to "board, int turn", since I could not think of a use case where we will need the function for a single place.
+			So now basically, the function returns all the possible moves for a player.
+			
+		3. Created a struct "moves", where it has two parameters: char list[] -> the string of all the moves, and int pointer -> the pointer to the current move, so we can iterate over the moves in the list.
+			We will have to create a function that returns the next move.
+
+	3/10:
+		
+		1. Made the following structs:
+			a. board: A simple 2D char array.
+			b. game_board: A board with a turn and check ints.
+			c. game: The same as before, but the turn was moved to the board.
+			d. move: A "link" in a linked list. It holds 2 positions (from, to) and  1 int (promote - the code of the promote piece) and a pointer to the next move.
+			e. pos: Just a int array for x and y;
+			
+		2. add_move: receives the head of a move linked list, or null, and a new move, and concatenates them.
+		
+		3. check4check: a function that checkes if you are in check (if your king is being threatened).
+		
+		4. get_moves: made a skeleton based on check4check (use it as a reference).
+		
+		5. create_move: just an easy way to create a new move with from coordinates,  and to coordinates, and promotion value. (you can see how to use it in the move_* functions)
+		
+		6. move_straight: returns all the possible vertical and horizontal moves a piece can do. pas len = 0 for free moving (like queen) and 1 for 1 step (like king).
+		
+		7. move_diag: same as 6, but in diagonal lines.
+		
+		8. move_pawn: special case for pawn. also checks for promotions.
+		
+		9. move_knight: didn't do this function yet. you can still try and run the code, but it wont catch rook moves. will do it tomorrow.
+		
+		10. get_color: does what the name says.
+
+Gal:
+	4/10 
+		I made the "get_moves" use "check4check" and not the "make_move".
+		get_moves collects all moves for a certien pieace, then execute the move on a clone_board and calls check4check. if check4check passed (no check) the move will be added to to res.
+
+		1. bypassed check4check for now, seems like theres an error somewhere in move_straight (more accuratly in the concat of the moves).
+
+		2. get_moves getting moves for pawns.
+
+		3. added "clone_board" func.
+
+		4. wrote the "make_move" func - changed it to get a "move" and not string. parsing will be needed  elsewhere ---------------------- NEED TO DEAL WITH PROMOTIONS LATER.
+
+		5. started working on the "console_game" loop. -
+			5.a added " moves = get_moves". now need to free it after every command. might want to think of better/smarter way to do it. lots of copy-paste of "free_moves(moves)"
+
+		
+		thinking of spliting the console_game to two parts. add a "g_command(moves)". that will get user's input. the console_game will use a switch-case to determine what to do.
+		will help with dealing with illegal commands, and with the massive overuse of "free_moves".
+		
+		6. added get_color to chessprog.h (it was missing)
+
+		7.console loop working for PvP. woot.
+		
+Tomer:
+		6/10
+			1. fixed the rook bug, and made sure it will not happen on diagonal moves as well.
+			2. looked at get_moves and I noticed that you didn't do it as we said: make get moves get all the moves for a single position on the board, and create "get_all_moves" that will run get_moves for every position on the board.
+				Can you fix that? (it might be better to name the functions "get_moves" and "get_single_move")
+			3. made the move_knight function. now you can finally play PVP \o/ woohooo!!!!!!
+		
+Gal:
+		8/10
+			not sure why we need 6/10's #2. I think I'd rather work with string-matching when user inputs "get_moves <x,y>" as we already saved  all the moves in order to check for Mate.
+			1. started working on seperating and splitting the console_game() like we discussed, but it needs more planning and thought.
+			    theres an easy way to split that doesn't really help us other than making the code somewhat nicer, but thats not really neccessy. 
+			   I've tried thinking about how to make it work better for GUI wize. but need some more though. might do it later with an actual notebook. otherwise we can think together on friday.
+
+Tomer:
+		11/10
+			1. Did the Load function, and fixed the Bishop definition from 'p' to 'b'.
+			2. Also did the "Best" in the minmax function, but we have a problem with "stack overflow".
+			3. You are also missing a tab in the </board> line of the save.
