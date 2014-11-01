@@ -8,6 +8,7 @@
 #define WIN_H 480
 #define LOAD 0
 #define SAVE 1
+#define SLOTS 5
 
 /* functions */
 

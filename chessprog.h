@@ -93,18 +93,13 @@ move* move_pawn(board, pos);
 move* move_straight(board, pos, int);
 move* move_diag(board, pos, int);
 move* move_knight(board, pos);
-void console_main();
 int calc_depth();
 
 /* GUI funcs */
 int main_gui();
 
 /** Console Funcs **/
-
-int console_settings();
-int console_game();
-void print_board(char b[BOARD_SIZE][BOARD_SIZE]);
-void print_line();
+void console_main();
 void print_move(move*);
 
 #endif

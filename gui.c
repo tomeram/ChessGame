@@ -485,7 +485,7 @@ char check_empty_slots() {
 	char path[23] = "saved_games/game_x.xml\0", res = 0;
 	int i;
 
-	for (i = 5; i > 0; i--) {
+	for (i = SLOTS; i > 0; i--) {
 		path[17] = i + '0';
 		slot = fopen(path, "r");
 		if (slot != NULL) {
@@ -506,7 +506,7 @@ void draw_empty_slots(char avail_slots) {
 
 	check_img_load(empty);
 
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < SLOTS; i++) {
 		if (!(avail_slots & 1)) {
 			blit_all(empty, NULL, &img_rect);
 		}

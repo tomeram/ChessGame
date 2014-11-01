@@ -6,14 +6,16 @@ void console_main() {
 	new_board(g_game.g_board.board);
 	print_board(g_game.g_board.board);
 
-	while (action != EXIT) {
+	while (action != EXIT && !error) {
 		if (action == SETTINGS) {
 			action = console_settings();
 		}
 		else {
 			g_game.moves = get_moves(g_game.g_board);
-			action = console_game();
-			free_moves(&g_game.moves);
+			if (!error) {
+				action = console_game();
+				free_moves(&g_game.moves);
+			}
 		}
 	}
 }
@@ -25,7 +27,14 @@ int console_settings() {
 	printf("Enter game setting:\n");
 
 	while (1) {
-		scanf("%50s", cmd);
+		if (scanf("%50s", cmd) < 0) {
+			printf("ERROR: failed to get input from console, please try again\n");
+			flush_input();
+			if (scanf("%50s", cmd) < 0) {
+				printf("ERROR: failed to get input from console, terminating game.\n");
+				return EXIT;
+			}
+		}
 
 		/*****************************************/
 		if (strcmp(cmd, "print") == 0) {
@@ -92,9 +101,24 @@ int console_settings() {
 				return SETTINGS;
 			}
 
-			scanf("%s", cmd);
+			if (scanf("%50s", cmd) < 0) {
+				printf("ERROR: failed to get difficulty input from console, please try again\n");
+				flush_input();
+				if (scanf("%50s", cmd) < 0) {
+					printf("ERROR: failed to get input from console, terminating game.\n");
+					return EXIT;
+				}
+			}
+
 			if (strcmp(cmd, "depth") == 0) {
-				scanf("%d", &in);
+				if (scanf("%d", &in) < 0) {
+					printf("ERROR: failed to get depth input from console, please try again.\n");
+					flush_input();
+					if (scanf("%d", &in) < 0) {
+						printf("ERROR: failed to get input from console, terminating game.\n");
+						return EXIT;
+					}
+				}
 
 				if (flush_input() != 0 || in > 4 || in < 1) {
 					printf("Wrong value for minimax depth. Value should be between 1 to 4\n");
@@ -125,7 +149,14 @@ int console_settings() {
 				return SETTINGS;
 			}
 
-			scanf("%s", cmd);
+			if (scanf("%50s", cmd) < 0) {
+				printf("ERROR: failed to color input from console, please try again\n");
+				flush_input();
+				if (scanf("%50s", cmd) < 0) {
+					printf("ERROR: failed to get input from console, terminating game.\n");
+					return EXIT;
+				}
+			}
 			if (flush_input() != 0) {
 				printf(ILLEGAL_COMMAND);
 			}
@@ -142,7 +173,16 @@ int console_settings() {
 
 		/*****************************************/
 		else if (strcmp(cmd, "load") == 0) {
-			scanf("%s", cmd);
+			
+			if (scanf("%50s", cmd) < 0) {
+				printf("ERROR: failed to get load path from console, please try again\n");
+				flush_input();
+				if (scanf("%50s", cmd) < 0) {
+					printf("ERROR: failed to get input from console, terminating game.\n");
+					return EXIT;
+				}
+			}
+
 			if (flush_input() != 0) {
 				printf(ILLEGAL_COMMAND);
 			}
@@ -191,7 +231,14 @@ int console_game() {
 				printf("Black player - enter your move:\n");
 			}
 
-			scanf("%50s", cmd);
+			if (scanf("%50s", cmd) < 0) {
+				printf("ERROR: failed to get input from console, please try again\n");
+				flush_input();
+				if (scanf("%50s", cmd) < 0) {
+					printf("ERROR: failed to get input from console, terminating game.\n");
+					return EXIT;
+				}
+			}
 
 			/*****************************************/
 			if (strcmp(cmd, "restart") == 0) {
@@ -221,9 +268,32 @@ int console_game() {
 			/*****************************************/
 			else if (strcmp(cmd, "move") == 0) {
 
-				scanf("%5s", src);
-				scanf("%50s", cmd);
-				scanf("%5s", dst);
+				if (scanf("%5s", src) < 0) {
+					printf("ERROR: failed to get source-move from console, please try again\n");
+					flush_input();
+					if (scanf("%50s", src) < 0) {
+						printf("ERROR: failed to get input from console, terminating game.\n");
+						return EXIT;
+					}
+				}
+				if (scanf("%50s", cmd) < 0) {
+					printf("ERROR: failed to get destination from console, please try again (e.g: to <b,4>) \n");
+					flush_input();
+					if (scanf("%50s", cmd) < 0) {
+						printf("ERROR: failed to get input from console, terminating game.\n");
+						return EXIT;
+					}
+				}
+				if (scanf("%5s", dst) < 0) {
+					printf("ERROR: failed to get destination from console, please try again (e.g: <b,4>) \n");
+					flush_input();
+					if (scanf("%5s", dst) < 0) {
+						printf("ERROR: failed to get input from console, terminating game.\n");
+						return EXIT;
+					}
+				}
+
+
 				if (strcmp(cmd, "to") == 0) {
 					s_x = src[3] - '1';
 					s_y = src[1] - 'a';
@@ -264,12 +334,13 @@ int console_game() {
 							printf("Illegal move\n");
 						}
 						else {
-							/* TODO: make smarter */
 							if (leagal_move(s_x, s_y, d_x, d_y) == NULL) {
 								printf("Illegal move\n");
 							}
 							else {
 								curr = create_move(s_x, s_y, d_x, d_y, promote);
+								if (error)
+									return EXIT;
 								make_move(&g_game.g_board, *curr);
 								free(curr);
 								print_board(g_game.g_board.board);
@@ -278,10 +349,23 @@ int console_game() {
 						}
 					}
 				}
+				else {
+					flush_input();
+					printf(ILLEGAL_COMMAND);
+				}
 			}
 			/*****************************************/
 			else if (strcmp(cmd, "get_moves") == 0) {
-				scanf("%5s", src);
+
+				if (scanf("%5s", src) < 0) {
+					printf("ERROR: failed to get position from console, please try again\n");
+					flush_input();
+					if (scanf("%5s", src) < 0) {
+						printf("ERROR: failed to get input from console, terminating game.\n");
+						return EXIT;
+					}
+				}
+
 				if (flush_input() != 0) {
 					printf(ILLEGAL_COMMAND);
 				}
@@ -300,7 +384,16 @@ int console_game() {
 
 			/*****************************************/
 			else if (strcmp(cmd, "save") == 0) {
-				scanf("%s", cmd);
+				
+				if (scanf("%50s", cmd) < 0) {
+					printf("ERROR: failed to get save path from console, please try again\n");
+					flush_input();
+					if (scanf("%50s", cmd) < 0) {
+						printf("ERROR: failed to get input from console, terminating game.\n");
+						return EXIT;
+					}
+				}
+
 				if (flush_input() != 0) {
 					printf(ILLEGAL_COMMAND);
 				}

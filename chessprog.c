@@ -80,7 +80,8 @@ int load(char path[51]) {
 
 	in = fopen(path, "r"); /* in = fopen("D:\\test.xml", "r"); */
 	if (in == NULL) {
-		printf("Error: Failed to load game from given file path.\n");
+		printf("Wrong file name\n");
+		return 0;
 	}
 
 	while (fgetc(in) != '\n'); /* Skip the first line (the xml declarations) */
@@ -132,7 +133,7 @@ int save(char path[51]) {
 
 	out = fopen(path, "w");
 	if (out == NULL) {
-		printf("Error! Failed to save file to given file path.\n");
+		printf("Wrong file name\n");
 		return 0;
 	}
 
@@ -192,8 +193,11 @@ void restart() {
 	init_board(g_game.g_board.board);
 	new_board(g_game.g_board.board);
 	g_game.g_board.turn = WHITE;
-	g_game.mode = PVP;
-	g_game.depth = 1;
+	
+	if (general_mode != GUI) {
+		g_game.mode = PVP;
+		g_game.depth = 1;
+	}
 }
 
 void quit() {
