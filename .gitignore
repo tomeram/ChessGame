@@ -14,3 +14,7 @@
 /HW3.vcxproj
 /HW3.vcxproj.filters
 /HW3.vcxproj.user
+.idea
+*.o
+game
+clion-log.txt

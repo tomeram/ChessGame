@@ -482,7 +482,7 @@ void print_window() {
 
 char check_empty_slots() {
 	FILE *slot = NULL;
-	char path[23] = "saved_games/game_x.xml\0", res = 0;
+	char path[24] = "saved_games/game_x.xml\0", res = 0;
 	int i;
 
 	for (i = SLOTS; i > 0; i--) {

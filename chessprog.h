@@ -6,8 +6,8 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
-#include <SDL.h>
-#include <SDL_video.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_video.h>
 
 /** Defines **/
 #define CONSOLE  0
@@ -71,14 +71,14 @@ void set_game_mode(int);
 void set_game_depth(int);
 void set_user_color(int);
 int load(char[51]);
-int save();
+int save(char path[51]);
 void restart();
 void quit();
 void make_move(game_board*, move);
 move* leagal_move(int, int, int, int);
 move* get_moves(game_board);
 void comp_turn();
-int minmax();
+int minmax(game_board board, int d, int max, int min);
 int get_x(char*);
 int get_y(char*);
 int check_board(board, int);

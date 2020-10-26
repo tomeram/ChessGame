@@ -22,7 +22,7 @@ void draw_empty_slots(char);
 void print_title();
 void gui_game();
 void print_pieces();
-void print_moves();
+void print_moves(int p_x, int p_y);
 int gui_promote();
 void clear_green(SDL_Surface*);
 void blit_all(SDL_Surface*, SDL_Rect*, SDL_Rect*);
